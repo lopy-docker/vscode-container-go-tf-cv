@@ -11,7 +11,7 @@ RUN cd /tmp \
   && mv gocv-${GOCV_VERSION} gocv \
   && cd gocv && make install \
   && go build -ldflags="-w -s" -o gocv_version cmd/version/main.go \
-  && mv gocv_version `go env GOPATH`/bin
+  && mv gocv_version `go env GOPATH`/bin \
   && cd .. && rm -rf gocv \
   && echo "install gocv finish" \
   && echo "install tf start ......" \
