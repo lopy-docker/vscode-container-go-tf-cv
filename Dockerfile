@@ -20,4 +20,5 @@ RUN cd /tmp \
   && rm -rf libtensorflow-cpu-linux-x86_64-${TF_VERSION}.tar.gz \
   && echo "install tf finish" \
   && ldconfig \
+  && apt install -y ffmpeg \
   && apt autoclean && apt autoremove -y
