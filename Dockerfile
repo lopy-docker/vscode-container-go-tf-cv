@@ -1,6 +1,7 @@
 
 ARG VARIANT=1
-FROM ghcr.io/lopy-docker/vscode-devcontainer:go-${VARIANT}
+ARG DEBIAN_VERSION=bookworm
+FROM ghcr.io/lopy-docker/vscode-devcontainer:go-${VARIANT}-${DEBIAN_VERSION}
 
 ENV TF_VERSION=2.14.1
 ENV GOCV_VERSION=0.37.0

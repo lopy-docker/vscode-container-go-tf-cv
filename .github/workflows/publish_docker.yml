@@ -2,17 +2,7 @@ name: Publish Docker image
 on:
   push:
     branches: [ main ]
-  schedule:
-    - cron: "45 3 1 * *"
 jobs:
-  # setup:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     matrix: ${{ steps.matrix.outputs.value }}
-  #   steps:
-  #     - id: matrix
-  #       run: |
-  #         echo '::set-output name=value::[\"1.16\", \"1.17\", \"1.18\"]'
 
   push_to_registry:
     name: Push Docker image to GitHub Packages
@@ -25,11 +15,7 @@ jobs:
       matrix:
         variant: 
           - "1.20"
-          - "1.22"
           - "1.23"
-    # strategy:
-    #   matrix:
-    #     value: ${{fromJson(needs.setup.outputs.matrix)}}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -39,24 +25,28 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Build container image
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     push: true
-      #     context: .
-      #     build-args: |
-      #       VARIANT=1.16
-      #     tags: |
-      #       ghcr.io/lopy-docker/vscode-devcontainer:go1.16
 
-      - name: Build container image
+      - name: Build container image bullseye
         uses: docker/build-push-action@v2
         with:
           push: true
           context: .
           build-args: |
             VARIANT=${{ matrix.variant }}
+            DEBIAN_VERSION=bullseye
           tags: |
+            ghcr.io/lopy-docker/vscode-devcontainer:go-${{ matrix.variant }}-tf-cv-bullseye
+
+      - name: Build container image bookworm
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: .
+          build-args: |
+            VARIANT=${{ matrix.variant }}
+            DEBIAN_VERSION=bookworm
+          tags: |
+            ghcr.io/lopy-docker/vscode-devcontainer:go-${{ matrix.variant }}-tf-cv-bookworm
             ghcr.io/lopy-docker/vscode-devcontainer:go-${{ matrix.variant }}-tf-cv
 
             
