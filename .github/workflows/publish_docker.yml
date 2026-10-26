@@ -26,17 +26,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build container image bullseye
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          context: .
-          build-args: |
-            VARIANT=${{ matrix.variant }}
-            DEBIAN_VERSION=bullseye
-          tags: |
-            ghcr.io/lopy-docker/vscode-devcontainer:go-${{ matrix.variant }}-tf-cv-bullseye
-
       - name: Build container image bookworm
         uses: docker/build-push-action@v2
         with:
